@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PMO Self-Assessment — Bluebird</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --teal: #4A6FA5;
+    --teal-dark: #1e3a5f;
+    --teal-light: #E8EEF7;
+    --teal-mid: #3a5a8a;
+    --ink: #1a1a1a;
+    --ink-mid: #444;
+    --ink-soft: #777;
+    --ink-faint: #bbb;
+    --surface: #f9f8f5;
+    --white: #ffffff;
+    --border: rgba(0,0,0,0.08);
+    --border-strong: rgba(0,0,0,0.15);
+    --cat-a: #4A6FA5;
+    --cat-b: #2B7FD4;
+    --cat-c: #7059CC;
+    --cat-d: #C4511F;
+    --cat-e: #B06A10;
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--surface);
+    color: var(--ink);
+    font-size: 16px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* ── Header ── */
+  .site-header {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    padding: 1.25rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .logo {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.4rem;
+    color: var(--teal-dark);
+    letter-spacing: -0.02em;
+  }
+
+  .logo span { color: var(--teal); }
+
+  .header-progress {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+
+  .header-bar-track {
+    width: 140px;
+    height: 4px;
+    background: var(--border);
+    border-radius: 99px;
+    overflow: hidden;
+  }
+
+  .header-bar-fill {
+    height: 4px;
+    background: var(--teal);
+    border-radius: 99px;
+    width: 0%;
+    transition: width 0.4s ease;
+  }
+
+  /* ── Hero ── */
+  .hero {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    padding: 4rem 2rem 3rem;
+    text-align: center;
+  }
+
+  .hero-eyebrow {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 1rem;
+  }
+
+  .hero h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    line-height: 1.15;
+    color: var(--ink);
+    max-width: 680px;
+    margin: 0 auto 1.25rem;
+    letter-spacing: -0.02em;
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: var(--teal);
+  }
+
+  .hero-desc {
+    font-size: 1.05rem;
+    color: var(--ink-mid);
+    max-width: 540px;
+    margin: 0 auto 2rem;
+    font-weight: 300;
+    line-height: 1.7;
+  }
+
+  .hero-meta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .hero-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+
+  .hero-meta-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--teal);
+    border-radius: 50%;
+  }
+
+  /* ── Category nav ── */
+  .cat-nav {
+    display: flex;
+    gap: 8px;
+    padding: 1.25rem 2rem;
+    overflow-x: auto;
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .cat-nav::-webkit-scrollbar { display: none; }
+
+  .cat-pill {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: 99px;
+    font-size: 12px;
+    font-weight: 500;
+    white-space: nowrap;
+    border: 1px solid var(--border-strong);
+    background: var(--white);
+    color: var(--ink-soft);
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+  }
+
+  .cat-pill:hover { background: var(--surface); color: var(--ink); }
+
+  .cat-pill-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+  }
+
+  /* ── Main layout ── */
+  .main {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem 6rem;
+  }
+
+  /* ── Category section ── */
+  .cat-section {
+    margin-bottom: 3rem;
+  }
+
+  .cat-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 1.25rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--border);
+  }
+
+  .cat-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 18px;
+  }
+
+  .cat-header-text { flex: 1; }
+
+  .cat-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.25rem;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+  }
+
+  .cat-desc {
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin-top: 3px;
+    font-weight: 300;
+  }
+
+  .cat-score-badge {
+    font-size: 13px;
+    font-weight: 500;
+    padding: 4px 12px;
+    border-radius: 99px;
+    border: 1px solid var(--border);
+    color: var(--ink-soft);
+    white-space: nowrap;
+    margin-top: 4px;
+    transition: all 0.3s;
+  }
+
+  /* ── Question card ── */
+  .q-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 10px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .q-card.answered {
+    border-color: rgba(29,158,117,0.3);
+    box-shadow: 0 0 0 3px rgba(29,158,117,0.06);
+  }
+
+  .q-number {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--ink-faint);
+    letter-spacing: 0.06em;
+    margin-bottom: 6px;
+  }
+
+  .q-text {
+    font-size: 14.5px;
+    color: var(--ink);
+    line-height: 1.55;
+    margin-bottom: 1rem;
+    font-weight: 400;
+  }
+
+  .scale-wrap { display: flex; flex-direction: column; gap: 6px; }
+
+  .scale-btns {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 6px;
+  }
+
+  .scale-btn {
+    padding: 9px 4px;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink-mid);
+    background: var(--surface);
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.15s;
+    position: relative;
+  }
+
+  .scale-btn:hover {
+    border-color: var(--teal);
+    color: var(--teal);
+    background: var(--teal-light);
+  }
+
+  .scale-btn.active {
+    background: var(--teal);
+    border-color: var(--teal);
+    color: var(--white);
+  }
+
+  .scale-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--ink-faint);
+    padding: 0 2px;
+  }
+
+  /* ── Submit zone ── */
+  .submit-zone {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 2rem;
+    text-align: center;
+    margin-top: 2rem;
+  }
+
+  .submit-zone h3 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+    color: var(--ink);
+  }
+
+  .submit-zone p {
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin-bottom: 1.5rem;
+    font-weight: 300;
+  }
+
+  .email-row {
+    display: flex;
+    gap: 10px;
+    max-width: 460px;
+    margin: 0 auto 1rem;
+    flex-wrap: wrap;
+  }
+
+  .email-input {
+    flex: 1;
+    min-width: 200px;
+    padding: 11px 14px;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    font-family: 'DM Sans', sans-serif;
+    color: var(--ink);
+    background: var(--surface);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .email-input:focus { border-color: var(--teal); background: var(--white); }
+  .email-input::placeholder { color: var(--ink-faint); }
+
+  .submit-btn {
+    padding: 11px 28px;
+    background: var(--teal);
+    color: var(--white);
+    border: none;
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    font-weight: 500;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    white-space: nowrap;
+  }
+
+  .submit-btn:hover { background: var(--teal-mid); }
+  .submit-btn:active { transform: scale(0.98); }
+  .submit-btn:disabled { background: var(--ink-faint); cursor: default; }
+
+  .error-msg {
+    font-size: 13px;
+    color: #c0392b;
+    margin-top: 4px;
+    display: none;
+  }
+
+  /* ── Results ── */
+  .results-panel {
+    display: none;
+    margin-top: 3rem;
+    animation: fadeUp 0.5s ease;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .results-hero {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 2.5rem;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .results-hero::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: #4A6FA5;
+    border-radius: var(--radius) var(--radius) 0 0;
+  }
+
+  .results-eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--teal);
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+  }
+
+  .results-score {
+    font-family: 'DM Serif Display', serif;
+    font-size: 5rem;
+    color: var(--ink);
+    line-height: 1;
+    letter-spacing: -0.03em;
+  }
+
+  .results-score-max {
+    font-size: 1.5rem;
+    color: var(--ink-faint);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+  }
+
+  .results-level {
+    display: inline-block;
+    margin: 1rem 0 0.5rem;
+    padding: 6px 20px;
+    border-radius: 99px;
+    font-size: 13px;
+    font-weight: 500;
+  }
+
+  .results-rec {
+    font-size: 14.5px;
+    color: var(--ink-mid);
+    max-width: 500px;
+    margin: 0.75rem auto 0;
+    line-height: 1.65;
+    font-weight: 300;
+  }
+
+  .score-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 10px;
+    margin-bottom: 1.5rem;
+  }
+
+  .score-tile {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 1rem;
+    text-align: center;
+  }
+
+  .score-tile-label {
+    font-size: 10px;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 6px;
+    line-height: 1.3;
+  }
+
+  .score-tile-num {
+    font-size: 1.75rem;
+    font-weight: 500;
+    color: var(--ink);
+    line-height: 1;
+  }
+
+  .score-tile-denom {
+    font-size: 11px;
+    color: var(--ink-faint);
+  }
+
+  .bar-section {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .bar-section-title {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ink-soft);
+    font-weight: 500;
+    margin-bottom: 1.25rem;
+  }
+
+  .bar-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+
+  .bar-row:last-child { margin-bottom: 0; }
+
+  .bar-label {
+    font-size: 13px;
+    color: var(--ink-mid);
+    width: 180px;
+    flex-shrink: 0;
+    line-height: 1.3;
+  }
+
+  .bar-track {
+    flex: 1;
+    height: 8px;
+    background: var(--surface);
+    border-radius: 99px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+
+  .bar-fill {
+    height: 8px;
+    border-radius: 99px;
+    width: 0%;
+    transition: width 0.8s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  .bar-num {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink-mid);
+    width: 36px;
+    text-align: right;
+  }
+
+  .reset-btn {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 10px 24px;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+    color: var(--ink-soft);
+    background: transparent;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.2s;
+  }
+
+  .reset-btn:hover { background: var(--surface); color: var(--ink); }
+
+  /* ── Footer ── */
+  footer {
+    text-align: center;
+    padding: 2rem;
+    font-size: 12px;
+    color: var(--ink-faint);
+    border-top: 1px solid var(--border);
+    margin-top: 4rem;
+  }
+
+  footer strong { color: var(--teal-dark); }
+
+  /* ── Responsive ── */
+  @media (max-width: 600px) {
+    .hero { padding: 3rem 1.25rem 2rem; }
+    .site-header { padding: 1rem 1.25rem; }
+    .header-bar-track { width: 80px; }
+    .main { padding: 2rem 1rem 5rem; }
+    .bar-label { width: 120px; font-size: 12px; }
+    .email-row { flex-direction: column; }
+    .submit-btn { width: 100%; }
+    .results-score { font-size: 4rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="site-header">
+  <div class="logo">Blue<span>bird</span></div>
+  <div class="header-progress">
+    <span id="headerCount">0 / 20</span>
+    <div class="header-bar-track">
+      <div class="header-bar-fill" id="headerBar"></div>
+    </div>
+  </div>
+</header>
+
+<!-- Hero -->
+<section class="hero">
+  <p class="hero-eyebrow">PMO Health Check</p>
+  <h1>Find out if your team is <em>running projects</em> or just surviving them.</h1>
+  <p class="hero-desc">20 questions. 5 minutes. Walk away with a clear picture of where your PMO stands — and exactly where to focus first.</p>
+  <div class="hero-meta">
+    <div class="hero-meta-item"><div class="hero-meta-dot"></div> 20 diagnostic questions</div>
+    <div class="hero-meta-item"><div class="hero-meta-dot"></div> 5 categories</div>
+    <div class="hero-meta-item"><div class="hero-meta-dot"></div> Instant scored results</div>
+  </div>
+</section>
+
+<!-- Category nav -->
+<nav class="cat-nav" aria-label="Jump to category">
+  <a href="#cat-pri" class="cat-pill"><span class="cat-pill-dot" style="background:#4A6FA5"></span>Prioritization</a>
+  <a href="#cat-vis" class="cat-pill"><span class="cat-pill-dot" style="background:#2B7FD4"></span>Visibility</a>
+  <a href="#cat-com" class="cat-pill"><span class="cat-pill-dot" style="background:#7059CC"></span>Communication</a>
+  <a href="#cat-del" class="cat-pill"><span class="cat-pill-dot" style="background:#C4511F"></span>Delivery</a>
+  <a href="#cat-kno" class="cat-pill"><span class="cat-pill-dot" style="background:#B06A10"></span>Knowledge</a>
+</nav>
+
+<!-- Main -->
+<main class="main">
+  <div id="questionArea"></div>
+
+  <!-- Submit -->
+  <div class="submit-zone" id="submitZone">
+    <h3>Ready to see your results?</h3>
+    <p>Enter your email to receive a copy of your diagnostic report, then click below to view your score.</p>
+    <div class="email-row">
+      <input type="email" class="email-input" id="emailInput" placeholder="your@email.com" />
+      <button class="submit-btn" onclick="submitAssessment()">View my results</button>
+    </div>
+    <div class="error-msg" id="errorMsg"></div>
+  </div>
+
+  <!-- Results -->
+  <div class="results-panel" id="resultsPanel">
+    <div class="results-hero">
+      <p class="results-eyebrow">Your PMO diagnostic</p>
+      <div class="results-score" id="totalScore">—</div>
+      <div class="results-score-max">out of 100</div>
+      <div class="results-level" id="levelBadge"></div>
+      <p class="results-rec" id="resultRec"></p>
+    </div>
+
+    <div class="score-grid" id="scoreGrid"></div>
+
+    <div class="bar-section">
+      <p class="bar-section-title">Category breakdown</p>
+      <div id="catBars"></div>
+    </div>
+
+    <div style="text-align:center;">
+      <button class="reset-btn" onclick="resetAssessment()">Start over</button>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <p>Built by <strong>Bluebird</strong> · PMO in a Box · &copy; 2026</p>
+  <p style="margin-top: 8px;">Questions? Reach Emily at <a href="mailto:emily@weisko.com" style="color: #4A6FA5; text-decoration: none;">emily@weisko.com</a> &nbsp;·&nbsp; <a href="tel:2088919949" style="color: #4A6FA5; text-decoration: none;">208-891-9949</a></p>
+</footer>
+
+<script>
+const categories = [
+  {
+    id: "pri", anchor: "cat-pri",
+    label: "Prioritization & intake",
+    desc: "How your organization decides what to work on and when.",
+    color: "#4A6FA5", bg: "#E8EEF7", icon: "✦"
+  },
+  {
+    id: "vis", anchor: "cat-vis",
+    label: "Visibility & reporting",
+    desc: "How clearly leadership and teams can see project status.",
+    color: "#2B7FD4", bg: "#E6F1FB", icon: "◎"
+  },
+  {
+    id: "com", anchor: "cat-com",
+    label: "Communication & structure",
+    desc: "How information flows and decisions get made.",
+    color: "#7059CC", bg: "#EEEDFE", icon: "◈"
+  },
+  {
+    id: "del", anchor: "cat-del",
+    label: "Delivery performance",
+    desc: "How consistently projects finish on time and on budget.",
+    color: "#C4511F", bg: "#FAECE7", icon: "▲"
+  },
+  {
+    id: "kno", anchor: "cat-kno",
+    label: "Knowledge & outcomes",
+    desc: "How well your organization learns and proves value.",
+    color: "#B06A10", bg: "#FAEEDA", icon: "◇"
+  }
+];
+
+const questions = [
+  { cat: "pri", text: "We have a defined process for submitting new project requests." },
+  { cat: "pri", text: "Projects are evaluated and ranked against consistent criteria before work begins." },
+  { cat: "pri", text: "Leadership and teams agree on which projects are the highest priority at any given time." },
+  { cat: "pri", text: "When capacity is limited, we have a clear method for deciding what gets paused or deprioritized." },
+  { cat: "pri", text: "New project requests are reviewed on a regular, scheduled cadence rather than ad hoc." },
+  { cat: "vis", text: "We have a single source of truth showing all active, upcoming, and completed projects." },
+  { cat: "vis", text: "Project status (timeline, budget, health) is visible to relevant stakeholders without them having to ask." },
+  { cat: "vis", text: "Leadership can see the overall project portfolio in one view at any time." },
+  { cat: "vis", text: "Our reporting is consistent — the same format, frequency, and metrics every time." },
+  { cat: "vis", text: "We can quickly identify which projects are at risk before they become a crisis." },
+  { cat: "com", text: "It is clear who owns communication for each project and who needs to be informed at each stage." },
+  { cat: "com", text: "We have defined escalation paths — people know who to go to when a decision is above their level." },
+  { cat: "com", text: "Meetings about projects have a clear purpose, agenda, and documented outcomes." },
+  { cat: "com", text: "Stakeholders receive consistent project updates without needing to chase the team for information." },
+  { cat: "com", text: "Cross-functional teams understand their roles and responsibilities on shared projects." },
+  { cat: "del", text: "Our projects are typically delivered on time and within budget." },
+  { cat: "del", text: "When a project goes off track, we identify it early and adjust rather than discovering it at the end." },
+  { cat: "del", text: "We use lessons from completed projects to improve how we run future ones." },
+  { cat: "del", text: "Our team has the tools and processes to manage workload without consistent overload or firefighting." },
+  { cat: "kno", text: "We track and report on project outcomes after delivery, not just completion dates." }
+];
+
+const levels = [
+  { min: 80, label: "PMO Mature", color: "#085041", bg: "#9FE1CB",
+    rec: "Your project management foundation is strong. Focus on optimization, documentation, and scaling what's working. You're well-positioned to formalize frameworks and mentor other teams." },
+  { min: 60, label: "Developing", color: "#0C447C", bg: "#B5D4F4",
+    rec: "You have good instincts in place but 1–2 categories need targeted work. Review your lowest-scoring areas — a focused tool or process there will unlock significant gains quickly." },
+  { min: 40, label: "Foundational", color: "#633806", bg: "#FAC775",
+    rec: "Your organization is running on effort rather than infrastructure. A PMO starter kit — like the PMO in a Box framework — would have immediate impact on clarity and delivery." },
+  { min: 20, label: "At Risk", color: "#712B13", bg: "#F5C4B3",
+    rec: "Multiple areas are creating drag on your team's performance. A structured diagnostic and consulting engagement is recommended to prioritize where to act first." },
+  { min: 0, label: "Critical", color: "#791F1F", bg: "#F7C1C1",
+    rec: "Your team lacks the structural foundation to manage projects consistently. A full PMO build is needed. Start with your highest-priority categories above." }
+];
+
+const answers = {};
+let qIndex = 0;
+
+function buildQuestions() {
+  const area = document.getElementById("questionArea");
+  let html = "";
+  let currentCat = null;
+  let localIdx = 0;
+
+  questions.forEach((q, i) => {
+    if (q.cat !== currentCat) {
+      if (currentCat !== null) html += `</div>`;
+      currentCat = q.cat;
+      localIdx = 0;
+      const cat = categories.find(c => c.id === q.cat);
+      html += `
+        <div class="cat-section" id="${cat.anchor}">
+          <div class="cat-header">
+            <div class="cat-icon" style="background:${cat.bg}; color:${cat.color}; font-size:20px;">${cat.icon}</div>
+            <div class="cat-header-text">
+              <div class="cat-name">${cat.label}</div>
+              <div class="cat-desc">${cat.desc}</div>
+            </div>
+            <div class="cat-score-badge" id="badge_${cat.id}">0 / 20</div>
+          </div>`;
+    }
+    localIdx++;
+    html += `
+      <div class="q-card" id="qcard_${i}">
+        <div class="q-number">Question ${i + 1}</div>
+        <div class="q-text">${q.text}</div>
+        <div class="scale-wrap">
+          <div class="scale-btns">
+            ${[1,2,3,4,5].map(v => `<button class="scale-btn" data-q="${i}" data-v="${v}" onclick="setAnswer(${i},${v})">${v}</button>`).join("")}
+          </div>
+          <div class="scale-labels"><span>Never</span><span>Rarely</span><span>Sometimes</span><span>Often</span><span>Always</span></div>
+        </div>
+      </div>`;
+  });
+
+  html += `</div>`;
+  area.innerHTML = html;
+}
+
+function setAnswer(qIdx, val) {
+  answers[qIdx] = val;
+  document.getElementById("qcard_" + qIdx).classList.add("answered");
+  document.querySelectorAll(`[data-q="${qIdx}"]`).forEach(btn => {
+    btn.classList.toggle("active", parseInt(btn.dataset.v) === val);
+  });
+  updateProgress();
+}
+
+function updateProgress() {
+  const n = Object.keys(answers).length;
+  const pct = Math.round(n / 20 * 100);
+  document.getElementById("headerBar").style.width = pct + "%";
+  document.getElementById("headerCount").textContent = n + " / 20";
+
+  categories.forEach(cat => {
+    const qs = questions.map((q, i) => ({ ...q, i })).filter(q => q.cat === cat.id);
+    const sum = qs.reduce((a, q) => a + (answers[q.i] || 0), 0);
+    const answered = qs.filter(q => answers[q.i]).length;
+    const badge = document.getElementById("badge_" + cat.id);
+    if (badge) badge.textContent = answered === 5 ? sum + " / 20" : answered + " of 5 answered";
+  });
+}
+
+function submitAssessment() {
+  const n = Object.keys(answers).length;
+  const email = document.getElementById("emailInput").value.trim();
+  const errEl = document.getElementById("errorMsg");
+
+  if (n < 20) {
+    errEl.textContent = "Please answer all 20 questions before submitting.";
+    errEl.style.display = "block";
+    const first = questions.findIndex((_, i) => !answers[i]);
+    document.getElementById("qcard_" + first).scrollIntoView({ behavior: "smooth", block: "center" });
+    return;
+  }
+
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    errEl.textContent = "Please enter a valid email address.";
+    errEl.style.display = "block";
+    return;
+  }
+
+  errEl.style.display = "none";
+  showResults();
+}
+
+function showResults() {
+  const total = Object.values(answers).reduce((a, b) => a + b, 0);
+  const level = levels.find(l => total >= l.min);
+
+  document.getElementById("totalScore").textContent = total;
+  const badge = document.getElementById("levelBadge");
+  badge.textContent = level.label;
+  badge.style.background = level.bg;
+  badge.style.color = level.color;
+  document.getElementById("resultRec").textContent = level.rec;
+
+  const grid = document.getElementById("scoreGrid");
+  let gridHtml = `<div class="score-tile"><div class="score-tile-label">Total score</div><div class="score-tile-num">${total}<span class="score-tile-denom"> /100</span></div></div>`;
+  categories.forEach(cat => {
+    const qs = questions.map((q, i) => ({ ...q, i })).filter(q => q.cat === cat.id);
+    const sum = qs.reduce((a, q) => a + (answers[q.i] || 0), 0);
+    gridHtml += `<div class="score-tile">
+      <div class="score-tile-label" style="color:${cat.color};">${cat.label}</div>
+      <div class="score-tile-num">${sum}<span class="score-tile-denom"> /20</span></div>
+    </div>`;
+  });
+  grid.innerHTML = gridHtml;
+
+  let barsHtml = "";
+  categories.forEach(cat => {
+    const qs = questions.map((q, i) => ({ ...q, i })).filter(q => q.cat === cat.id);
+    const sum = qs.reduce((a, q) => a + (answers[q.i] || 0), 0);
+    const pct = Math.round(sum / 20 * 100);
+    barsHtml += `<div class="bar-row">
+      <span class="bar-label">${cat.label}</span>
+      <div class="bar-track"><div class="bar-fill" data-pct="${pct}" style="background:${cat.color};"></div></div>
+      <span class="bar-num">${sum}/20</span>
+    </div>`;
+  });
+  document.getElementById("catBars").innerHTML = barsHtml;
+
+  document.getElementById("submitZone").style.display = "none";
+  const panel = document.getElementById("resultsPanel");
+  panel.style.display = "block";
+  panel.scrollIntoView({ behavior: "smooth", block: "start" });
+
+  setTimeout(() => {
+    document.querySelectorAll(".bar-fill").forEach(el => {
+      el.style.width = el.dataset.pct + "%";
+    });
+  }, 100);
+}
+
+function resetAssessment() {
+  Object.keys(answers).forEach(k => delete answers[k]);
+  document.querySelectorAll(".scale-btn").forEach(b => b.classList.remove("active"));
+  document.querySelectorAll(".q-card").forEach(c => c.classList.remove("answered"));
+  document.getElementById("headerBar").style.width = "0%";
+  document.getElementById("headerCount").textContent = "0 / 20";
+  categories.forEach(cat => {
+    const badge = document.getElementById("badge_" + cat.id);
+    if (badge) badge.textContent = "0 / 20";
+  });
+  document.getElementById("emailInput").value = "";
+  document.getElementById("submitZone").style.display = "block";
+  document.getElementById("resultsPanel").style.display = "none";
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+buildQuestions();
+</script>
+</body>
+</html>
