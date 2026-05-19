@@ -845,34 +845,43 @@ async function submitAssessment() {
 
   errEl.style.display = "none";
   submitBtn.disabled = true;
-  submitBtn.textContent = "Submitting…";
+  submitBtn.textContent = "Submitting...";
 
-  // Build score summary
   const total = Object.values(answers).reduce((a, b) => a + b, 0);
   const level = levels.find(l => total >= l.min);
-  const catScores = categories.map(cat => {
+
+  const catLines = categories.map(cat => {
     const qs = questions.map((q, i) => ({ ...q, i })).filter(q => q.cat === cat.id);
     const sum = qs.reduce((a, q) => a + (answers[q.i] || 0), 0);
-    return cat.label + ": " + sum + "/20";
-  }).join(" | ");
+    return cat.label + ": " + sum + " / 20";
+  });
 
-  // Send to Formspree
+  const formData = new FormData();
+  formData.append("email", email);
+  formData.append("_replyto", email);
+  formData.append("_subject", "PMO Self-Assessment Results: " + level.label + " (" + total + "/100)");
+  formData.append("Submitter Email", email);
+  formData.append("Total Score", total + " / 100");
+  formData.append("Diagnostic Level", level.label);
+  formData.append("Prioritization & Intake", catLines[0].split(": ")[1]);
+  formData.append("Visibility & Reporting", catLines[1].split(": ")[1]);
+  formData.append("Communication & Structure", catLines[2].split(": ")[1]);
+  formData.append("Delivery Performance", catLines[3].split(": ")[1]);
+  formData.append("Knowledge & Outcomes", catLines[4].split(": ")[1]);
+  formData.append("Recommendation", level.rec);
+
   try {
-    await fetch("https://formspree.io/f/xqejadqy", {
+    const res = await fetch("https://formspree.io/f/xqejadqy", {
       method: "POST",
-      headers: { "Content-Type": "application/json", "Accept": "application/json" },
-      body: JSON.stringify({
-        email: email,
-        total_score: total + "/100",
-        diagnostic_level: level.label,
-        category_scores: catScores,
-        recommendation: level.rec,
-        _replyto: email,
-        _subject: "PMO Self-Assessment Results — " + level.label + " (" + total + "/100)"
-      })
+      body: formData,
+      headers: { "Accept": "application/json" }
     });
+    const data = await res.json();
+    if (!res.ok) {
+      console.error("Formspree error:", data);
+    }
   } catch(e) {
-    // Silently continue — still show results even if email fails
+    console.error("Submission error:", e);
   }
 
   submitBtn.disabled = false;
