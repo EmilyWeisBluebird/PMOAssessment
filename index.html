@@ -638,6 +638,24 @@
   }
   .reset-btn:hover { background: var(--surface); color: var(--ink); }
 
+  /* Save note */
+  .save-note {
+    background: #FFFBEA;
+    border: 1px solid #F0D060;
+    border-radius: var(--radius);
+    padding: 1rem 1.5rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+
+  .save-note p {
+    font-size: 13.5px;
+    color: #7A5C00;
+    line-height: 1.5;
+  }
+
+  .save-note strong { font-weight: 500; }
+
   /* Footer */
   footer {
     text-align: center;
@@ -734,10 +752,14 @@
       <div class="offering-tags" id="offeringTags"></div>
     </div>
 
+    <div class="save-note">
+      <p>📋 <strong>Save your results</strong> — screenshot or print this page before you close it. Your results won't be saved after you exit.</p>
+    </div>
+
     <div class="emily-cta">
       <h3>Want help putting this into action?</h3>
       <p>Emily works directly with teams to build the processes, templates, and structure you need — without the corporate fluff.</p>
-      <a href="mailto:emily@weisko.com" class="emily-btn">Work with Emily</a>
+      <a id="emilyEmailBtn" href="mailto:emily@weisko.com" class="emily-btn">Work with Emily</a>
     </div>
 
     <div style="text-align:center;">
@@ -1035,6 +1057,18 @@ function showResults(name, total, level) {
   // Offerings
   document.getElementById("offeringsDesc").textContent = level.offeringsDesc;
   document.getElementById("offeringTags").innerHTML = level.offerings.map(o => `<span class="offering-tag">${o}</span>`).join("");
+
+  // Build pre-filled mailto for Work with Emily button
+  const catSummary = categories.map(cat => {
+    const qs = questions.map((q, i) => ({ ...q, i })).filter(q => q.cat === cat.id);
+    const sum = qs.reduce((a, q) => a + (answers[q.i] || 0), 0);
+    const max = qs.length * 5;
+    return cat.label + ": " + sum + "/" + max;
+  }).join("%0D%0A");
+
+  const subject = encodeURIComponent("I'd like to work with you — " + name + " (" + level.label + ", " + total + "/100)");
+  const body = "Hi Emily,%0D%0A%0D%0AI just completed the Bluebird project management assessment and would love to connect about working together.%0D%0A%0D%0AHere are my results:%0D%0AName: " + encodeURIComponent(name) + "%0D%0AOverall Score: " + total + "/100%0D%0ADiagnostic Level: " + encodeURIComponent(level.label) + "%0D%0A%0D%0ACategory Breakdown:%0D%0A" + catSummary + "%0D%0A%0D%0ALooking forward to hearing from you!%0D%0A%0D%0A" + encodeURIComponent(name);
+  document.getElementById("emilyEmailBtn").href = "mailto:emily@weisko.com?subject=" + subject + "&body=" + body;
 
   document.getElementById("submitZone").style.display = "none";
   const panel = document.getElementById("resultsPanel");
