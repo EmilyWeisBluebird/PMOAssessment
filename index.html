@@ -276,15 +276,15 @@
 
   .scale-btns {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 6px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
   }
 
   .scale-btn {
-    padding: 10px 6px;
+    padding: 12px 8px;
     border: 1px solid var(--border-strong);
     border-radius: var(--radius-sm);
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 500;
     color: var(--ink-mid);
     background: var(--surface);
@@ -882,11 +882,9 @@ function buildQuestions() {
         <div class="scale-wrap">
           <div class="scale-btns">
             ${[
-              {v:1, label:"Never"},
-              {v:2, label:"Not really"},
-              {v:3, label:"Kind of"},
-              {v:4, label:"Most of the time"},
-              {v:5, label:"Absolutely"}
+              {v:1, label:"No"},
+              {v:3, label:"Sometimes"},
+              {v:5, label:"Yes"}
             ].map(opt => `<button class="scale-btn" data-q="${i}" data-v="${opt.v}" onclick="setAnswer(${i},${opt.v})">${opt.label}</button>`).join("")}
           </div>
           <div class="scale-labels">
