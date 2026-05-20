@@ -281,27 +281,24 @@
   }
 
   .scale-btn {
-    padding: 9px 4px;
+    padding: 10px 6px;
     border: 1px solid var(--border-strong);
     border-radius: var(--radius-sm);
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 500;
     color: var(--ink-mid);
     background: var(--surface);
     cursor: pointer;
     text-align: center;
     transition: all 0.15s;
+    line-height: 1.3;
   }
 
   .scale-btn:hover { border-color: var(--blue); color: var(--blue); background: var(--blue-light); }
   .scale-btn.active { background: var(--blue); border-color: var(--blue); color: var(--white); }
 
   .scale-labels {
-    display: flex;
-    justify-content: space-between;
-    font-size: 11px;
-    color: var(--ink-faint);
-    padding: 0 2px;
+    display: none;
   }
 
   /* Submit zone */
@@ -884,10 +881,16 @@ function buildQuestions() {
         <div class="q-text">${q.text}</div>
         <div class="scale-wrap">
           <div class="scale-btns">
-            ${[1,2,3,4,5].map(v => `<button class="scale-btn" data-q="${i}" data-v="${v}" onclick="setAnswer(${i},${v})">${v}</button>`).join("")}
+            ${[
+              {v:1, label:"Never"},
+              {v:2, label:"Not really"},
+              {v:3, label:"Kind of"},
+              {v:4, label:"Most of the time"},
+              {v:5, label:"Absolutely"}
+            ].map(opt => `<button class="scale-btn" data-q="${i}" data-v="${opt.v}" onclick="setAnswer(${i},${opt.v})">${opt.label}</button>`).join("")}
           </div>
           <div class="scale-labels">
-            <span>Not at all</span><span>Rarely</span><span>Sometimes</span><span>Usually</span><span>Always</span>
+            <span>Never</span><span>Not really</span><span>Kind of</span><span>Most of the time</span><span>Absolutely</span>
           </div>
         </div>
       </div>`;
