@@ -992,6 +992,8 @@ async function submitAssessment() {
     fd.append("Total Score", total + "/100");
     fd.append("Diagnostic Level", level.label);
     fd.append("Category Scores", catScores);
+    fd.append("Recommended Templates & Processes", level.offerings.join(", "));
+    fd.append("Recommendation", level.rec);
     await fetch("https://formspree.io/f/xqejadqy", { method: "POST", body: fd, headers: { "Accept": "application/json" } });
   } catch(e) { console.error("Formspree:", e); }
 
