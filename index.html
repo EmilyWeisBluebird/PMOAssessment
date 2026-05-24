@@ -806,224 +806,173 @@
 
 <script>
 const categories = [
-  {
-    id: "pri", anchor: "cat-pri",
-    label: "How you decide what to work on",
-    desc: "Do you have a clear way to choose what gets attention — and what doesn't?",
-    color: "#4A6FA5", bg: "#E8EEF7", icon: "✦",
-    offerings: ["Project Intake Form", "Project Prioritization Template", "Project Prioritization Process", "PMO Governance Process"]
-  },
-  {
-    id: "vis", anchor: "cat-vis",
-    label: "How you track what's happening",
-    desc: "Can you and your team see project status without chasing people for updates?",
-    color: "#2B7FD4", bg: "#E6F1FB", icon: "◎",
-    offerings: ["Leadership Project Dashboard", "Project Intake Template", "Risk Management Process"]
-  },
-  {
-    id: "com", anchor: "cat-com",
-    label: "How your team stays aligned",
-    desc: "Does everyone know what's going on, who owns what, and where to go when things get complicated?",
-    color: "#7059CC", bg: "#EEEDFE", icon: "◈",
-    offerings: ["Communication Plan & Matrix", "Stakeholder Matrix", "RACI Chart", "Meeting Agenda Templates", "Communication Management Process"]
-  },
-  {
-    id: "del", anchor: "cat-del",
-    label: "How you get work done",
-    desc: "Do your projects actually finish — on time, on budget, and without burning your team out?",
-    color: "#C4511F", bg: "#FAECE7", icon: "▲",
-    offerings: ["Project Charter Template", "PMO Governance Process", "Risk Management Process", "Project Intake & Prioritization Process"]
-  },
-  {
-    id: "kno", anchor: "cat-kno",
-    label: "How you learn and improve",
-    desc: "Does your team get better with every project, or do the same problems keep coming back?",
-    color: "#B06A10", bg: "#FAEEDA", icon: "◇",
-    offerings: ["PMO Governance Process", "Project Charter Template"]
-  }
+  { id: "pri", anchor: "cat-pri", label: "How you decide what to work on", desc: "Do you have a clear way to choose what gets attention — and what doesn't?", color: "#4A6FA5", bg: "#E8EEF7", icon: "✦", offerings: ["Project Intake Form", "Project Prioritization Template", "Project Prioritization Process", "PMO Governance Process"] },
+  { id: "vis", anchor: "cat-vis", label: "How you track what's happening", desc: "Can you and your team see project status without chasing people for updates?", color: "#2B7FD4", bg: "#E6F1FB", icon: "◎", offerings: ["Leadership Project Dashboard", "Project Intake Template", "Risk Management Process"] },
+  { id: "com", anchor: "cat-com", label: "How your team stays aligned", desc: "Does everyone know what's going on, who owns what, and where to go when things get complicated?", color: "#7059CC", bg: "#EEEDFE", icon: "◈", offerings: ["Communication Plan & Matrix", "Stakeholder Matrix", "RACI Chart", "Meeting Agenda Templates", "Communication Management Process"] },
+  { id: "del", anchor: "cat-del", label: "How you get work done", desc: "Do your projects actually finish — on time, on budget, and without burning your team out?", color: "#C4511F", bg: "#FAECE7", icon: "▲", offerings: ["Project Charter Template", "PMO Governance Process", "Risk Management Process", "Project Intake & Prioritization Process"] },
+  { id: "kno", anchor: "cat-kno", label: "How you learn and improve", desc: "Does your team get better with every project, or do the same problems keep coming back?", color: "#B06A10", bg: "#FAEEDA", icon: "◇", offerings: ["PMO Governance Process", "Project Charter Template"] }
 ];
 
 const questions = [
-  // How you decide what to work on
   { cat: "pri", text: "When someone has a new idea or request, is there a clear way to submit it so nothing gets lost?" },
   { cat: "pri", text: "Do you have a way to compare projects against each other to decide which ones to tackle first?" },
   { cat: "pri", text: "When you look at everything on your plate, does your team agree on what the top priorities actually are?" },
   { cat: "pri", text: "When your team is stretched thin, do you have a clear way to decide what gets pushed back?" },
   { cat: "pri", text: "Do you review and update your list of priorities on a regular schedule rather than just reacting as things come up?" },
-  // How you track what's happening
   { cat: "vis", text: "Is there one place your team can go to see everything that's in progress, coming up, or finished?" },
   { cat: "vis", text: "Can leadership see a high-level view of all active projects without having to ask around for updates?" },
   { cat: "vis", text: "Do you have a consistent way of sharing project updates so they always look and feel the same?" },
   { cat: "vis", text: "Can you tell when a project is heading off track before it becomes a real problem?" },
   { cat: "vis", text: "Does your team know what a finished, successful project looks like before the work even starts?" },
-  // How your team stays aligned
   { cat: "com", text: "Does everyone involved in a project understand how it affects them and what they need to do?" },
   { cat: "com", text: "Is it clear who makes the final call on a project when things get complicated or priorities conflict?" },
   { cat: "com", text: "Do your team meetings have a clear agenda and end with everyone knowing exactly what happens next?" },
   { cat: "com", text: "Do the right people get project updates without having to chase someone down for information?" },
   { cat: "com", text: "When a project involves more than one team or department, is it clear who owns what?" },
-  // How you get work done
   { cat: "del", text: "Do your projects typically wrap up on time and within the budget or resources you planned for?" },
   { cat: "del", text: "When something goes wrong on a project, do you catch it early enough to actually fix it?" },
   { cat: "del", text: "Does every project kick off with a clear, agreed-upon plan before anyone starts doing the work?" },
   { cat: "del", text: "Is your team able to manage their workload without constantly feeling overwhelmed or in firefighting mode?" },
-  // How you learn and improve
   { cat: "kno", text: "When a project wraps up, does your team take time to document what worked, what didn't, and what to do differently next time?" }
 ];
 
 const levels = [
-  {
-    min: 80, label: "Running strong", color: "#1e3a5f", bg: "#C2D3EC",
-    rec: "Your team has solid project management habits — you're doing more right than wrong. Now it's about making it consistent and scalable. The right tools will turn your good habits into a repeatable system your whole team can rely on.",
-    offeringsDesc: "Based on your score, here's what will help you level up:",
-    offerings: ["Leadership Project Dashboard", "PMO Governance Process", "Communication Management Process"]
-  },
-  {
-    min: 60, label: "Getting there", color: "#0C447C", bg: "#C2D8F5",
-    rec: "You have good instincts but things are slipping through the cracks. A few focused processes and templates will give your team the structure to stop reacting and start leading. You're closer than you think.",
-    offeringsDesc: "These tools will close the gaps and build consistency:",
-    offerings: ["Project Charter Template", "Communication Plan & Matrix", "Stakeholder Matrix", "Risk Management Process", "Leadership Project Dashboard"]
-  },
-  {
-    min: 40, label: "Building the foundation", color: "#633806", bg: "#FAC775",
-    rec: "Your team is running on effort and good intentions — and that only gets you so far. The good news? Small changes make a big difference fast. A few core templates and processes will bring immediate order to the chaos.",
-    offeringsDesc: "Start here to build your foundation:",
-    offerings: ["Project Intake Form", "Project Prioritization Template", "Project Charter Template", "Meeting Agenda Templates", "Stakeholder Matrix", "Project Intake & Prioritization Process"]
-  },
-  {
-    min: 20, label: "Just getting started", color: "#712B13", bg: "#F5C4B3",
-    rec: "Your team is surviving on instinct — and that's okay, everyone starts somewhere. The fact that you're here means you already know something needs to change. Let's start with the basics and build from there.",
-    offeringsDesc: "Here's where to begin — these will have immediate impact:",
-    offerings: ["Project Intake Form", "Project Prioritization Template", "Project Charter Template", "Meeting Agenda Templates", "Project Intake & Prioritization Process", "PMO Governance Process"]
-  },
-  {
-    min: 0, label: "Just getting started", color: "#712B13", bg: "#F5C4B3",
-    rec: "Your team is surviving on instinct — and that's okay, everyone starts somewhere. The fact that you're here means you already know something needs to change. Let's start with the basics and build from there.",
-    offeringsDesc: "Here's where to begin — these will have immediate impact:",
-    offerings: ["Project Intake Form", "Project Prioritization Template", "Project Charter Template", "Meeting Agenda Templates", "Project Intake & Prioritization Process", "PMO Governance Process"]
-  }
+  { min: 80, label: "Running strong", color: "#1e3a5f", bg: "#C2D3EC", rec: "Your team has solid project management habits — you're doing more right than wrong. Now it's about making it consistent and scalable. The right tools will turn your good habits into a repeatable system your whole team can rely on.", offeringsDesc: "Based on your score, here's what will help you level up:", offerings: ["Leadership Project Dashboard", "PMO Governance Process", "Communication Management Process"] },
+  { min: 60, label: "Getting there", color: "#0C447C", bg: "#C2D8F5", rec: "You have good instincts but things are slipping through the cracks. A few focused processes and templates will give your team the structure to stop reacting and start leading. You're closer than you think.", offeringsDesc: "These tools will close the gaps and build consistency:", offerings: ["Project Charter Template", "Communication Plan & Matrix", "Stakeholder Matrix", "Risk Management Process", "Leadership Project Dashboard"] },
+  { min: 40, label: "Building the foundation", color: "#633806", bg: "#FAC775", rec: "Your team is running on effort and good intentions — and that only gets you so far. The good news? Small changes make a big difference fast. A few core templates and processes will bring immediate order to the chaos.", offeringsDesc: "Start here to build your foundation:", offerings: ["Project Intake Form", "Project Prioritization Template", "Project Charter Template", "Meeting Agenda Templates", "Stakeholder Matrix", "Project Intake & Prioritization Process"] },
+  { min: 0, label: "Just getting started", color: "#712B13", bg: "#F5C4B3", rec: "Your team is surviving on instinct — and that's okay, everyone starts somewhere. The fact that you're here means you already know something needs to change. Let's start with the basics and build from there.", offeringsDesc: "Here's where to begin — these will have immediate impact:", offerings: ["Project Intake Form", "Project Prioritization Template", "Project Charter Template", "Meeting Agenda Templates", "Project Intake & Prioritization Process", "PMO Governance Process"] }
 ];
 
-const answers = {};
+var answers = {};
+var submitterOrg = "";
 
 function buildQuestions() {
-  const area = document.getElementById("questionArea");
-  let html = "";
-  let currentCat = null;
+  var area = document.getElementById("questionArea");
+  var scaleOptions = [{v:1,label:"No"},{v:3,label:"Sometimes"},{v:5,label:"Yes"}];
+  var html = "";
+  var currentCat = null;
 
-  questions.forEach((q, i) => {
+  for (var i = 0; i < questions.length; i++) {
+    var q = questions[i];
     if (q.cat !== currentCat) {
-      if (currentCat !== null) html += `</div>`;
+      if (currentCat !== null) html += "</div>";
       currentCat = q.cat;
-      const cat = categories.find(c => c.id === q.cat);
-      html += `
-        <div class="cat-section" id="${cat.anchor}">
-          <div class="cat-header">
-            <div class="cat-icon" style="background:${cat.bg}; color:${cat.color}; font-size:18px;">${cat.icon}</div>
-            <div class="cat-header-text">
-              <div class="cat-name">${cat.label}</div>
-              <div class="cat-desc">${cat.desc}</div>
-            </div>
-            <div class="cat-score-badge" id="badge_${cat.id}">0 / 5 answered</div>
-          </div>`;
+      var cat = null;
+      for (var c = 0; c < categories.length; c++) { if (categories[c].id === q.cat) { cat = categories[c]; break; } }
+      var catQCount = 0;
+      for (var ci = 0; ci < questions.length; ci++) { if (questions[ci].cat === cat.id) catQCount++; }
+      html += '<div class="cat-section" id="' + cat.anchor + '">';
+      html += '<div class="cat-header">';
+      html += '<div class="cat-icon" style="background:' + cat.bg + ';color:' + cat.color + ';font-size:18px;">' + cat.icon + '</div>';
+      html += '<div class="cat-header-text"><div class="cat-name">' + cat.label + '</div><div class="cat-desc">' + cat.desc + '</div></div>';
+      html += '<div class="cat-score-badge" id="badge_' + cat.id + '">0 / ' + catQCount + ' answered</div>';
+      html += '</div>';
     }
-
-    html += `
-      <div class="q-card" id="qcard_${i}">
-        <div class="q-number">Question ${i + 1}</div>
-        <div class="q-text">${q.text}</div>
-        <div class="scale-wrap">
-          <div class="scale-btns">
-            ${[
-              {v:1, label:"No"},
-              {v:3, label:"Sometimes"},
-              {v:5, label:"Yes"}
-            ].map(opt => `<button class="scale-btn" data-q="${i}" data-v="${opt.v}" onclick="setAnswer(${i},${opt.v})">${opt.label}</button>`).join("")}
-          </div>
-          <div class="scale-labels">
-            <span>Never</span><span>Not really</span><span>Kind of</span><span>Most of the time</span><span>Absolutely</span>
-          </div>
-        </div>
-      </div>`;
-  });
-
-  html += `</div>`;
+    html += '<div class="q-card" id="qcard_' + i + '">';
+    html += '<div class="q-number">Question ' + (i + 1) + '</div>';
+    html += '<div class="q-text">' + q.text + '</div>';
+    html += '<div class="scale-wrap"><div class="scale-btns">';
+    for (var s = 0; s < scaleOptions.length; s++) {
+      var opt = scaleOptions[s];
+      html += '<button class="scale-btn" data-q="' + i + '" data-v="' + opt.v + '" onclick="setAnswer(' + i + ',' + opt.v + ')">' + opt.label + '</button>';
+    }
+    html += '</div></div></div>';
+  }
+  html += "</div>";
   area.innerHTML = html;
 }
 
 function setAnswer(qIdx, val) {
-  answers[parseInt(qIdx)] = parseInt(val);
-  document.getElementById("qcard_" + qIdx).classList.add("answered");
-  document.querySelectorAll(`[data-q="${qIdx}"]`).forEach(btn => {
-    btn.classList.toggle("active", parseInt(btn.dataset.v) === val);
-  });
+  answers[qIdx] = val;
+  var card = document.getElementById("qcard_" + qIdx);
+  if (card) card.classList.add("answered");
+  var btns = document.querySelectorAll('[data-q="' + qIdx + '"]');
+  for (var b = 0; b < btns.length; b++) {
+    if (parseInt(btns[b].getAttribute("data-v")) === val) {
+      btns[b].classList.add("active");
+    } else {
+      btns[b].classList.remove("active");
+    }
+  }
   updateProgress();
 }
 
 function updateProgress() {
-  const n = Object.keys(answers).filter(k => answers[k] !== undefined).length;
-  const pct = Math.round(n / 20 * 100);
+  var n = 0;
+  for (var i = 0; i < questions.length; i++) {
+    if (answers[i] !== undefined) n++;
+  }
+  var pct = Math.round(n / questions.length * 100);
   document.getElementById("headerBar").style.width = pct + "%";
-  document.getElementById("headerCount").textContent = n + " / 20";
+  document.getElementById("headerCount").textContent = n + " / " + questions.length;
 
-  categories.forEach(cat => {
-    const qs = questions.map((q, i) => ({ ...q, i })).filter(q => q.cat === cat.id);
-    const answered = qs.filter(q => answers[q.i] !== undefined).length;
-    const sum = qs.reduce((a, q) => a + (answers[q.i] || 0), 0);
-    const badge = document.getElementById("badge_" + cat.id);
-    if (badge) badge.textContent = answered === qs.length ? sum + " / " + (qs.length * 5) : answered + " of " + qs.length + " answered";
-  });
+  for (var c = 0; c < categories.length; c++) {
+    var cat = categories[c];
+    var answered = 0, sum = 0, total = 0;
+    for (var i = 0; i < questions.length; i++) {
+      if (questions[i].cat === cat.id) {
+        total++;
+        if (answers[i] !== undefined) { answered++; sum += answers[i]; }
+      }
+    }
+    var badge = document.getElementById("badge_" + cat.id);
+    if (badge) {
+      badge.textContent = answered === total ? sum + " / " + (total * 5) : answered + " of " + total + " answered";
+    }
+  }
 }
 
 async function submitAssessment() {
-  const n = Object.keys(answers).filter(k => answers[k] !== undefined).length;
-  const firstName = document.getElementById("firstNameInput").value.trim();
-  const lastName = document.getElementById("lastNameInput").value.trim();
-  const org = document.getElementById("orgInput").value.trim();
-  const name = (firstName + " " + lastName).trim();
-  const email = document.getElementById("emailInput").value.trim();
-  const errEl = document.getElementById("errorMsg");
-  const submitBtn = document.querySelector(".submit-btn");
+  var n = 0;
+  for (var i = 0; i < questions.length; i++) { if (answers[i] !== undefined) n++; }
 
-  if (n < 20) {
+  var firstName = document.getElementById("firstNameInput").value.trim();
+  var lastName  = document.getElementById("lastNameInput").value.trim();
+  var org       = document.getElementById("orgInput").value.trim();
+  var email     = document.getElementById("emailInput").value.trim();
+  var errEl     = document.getElementById("errorMsg");
+  var submitBtn = document.querySelector(".submit-btn");
+
+  if (n < questions.length) {
     errEl.textContent = "Please answer all " + questions.length + " questions before submitting. You have answered " + n + " so far.";
     errEl.style.display = "block";
-    const first = questions.findIndex((_, i) => answers[i] === undefined);
-    if (first >= 0) document.getElementById("qcard_" + first).scrollIntoView({ behavior: "smooth", block: "center" });
+    for (var i = 0; i < questions.length; i++) {
+      if (answers[i] === undefined) {
+        document.getElementById("qcard_" + i).scrollIntoView({ behavior: "smooth", block: "center" });
+        break;
+      }
+    }
     return;
   }
-  if (!firstName) {
-    errEl.textContent = "Please enter your first name.";
-    errEl.style.display = "block";
-    return;
-  }
-  if (!lastName) {
-    errEl.textContent = "Please enter your last name.";
-    errEl.style.display = "block";
-    return;
-  }
-  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    errEl.textContent = "Please enter a valid email address.";
-    errEl.style.display = "block";
-    return;
-  }
+  if (!firstName) { errEl.textContent = "Please enter your first name."; errEl.style.display = "block"; return; }
+  if (!lastName)  { errEl.textContent = "Please enter your last name.";  errEl.style.display = "block"; return; }
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { errEl.textContent = "Please enter a valid email address."; errEl.style.display = "block"; return; }
 
   errEl.style.display = "none";
   submitBtn.disabled = true;
   submitBtn.textContent = "Submitting...";
 
-  const total = Object.values(answers).reduce((a, b) => a + b, 0);
-  const level = levels.find(l => total >= l.min);
+  var name = (firstName + " " + lastName).trim();
+  submitterOrg = org;
 
-  const catScores = categories.map(cat => {
-    const qs = questions.map((q, i) => ({ ...q, i })).filter(q => q.cat === cat.id);
-    const sum = qs.reduce((a, q) => a + (answers[q.i] || 0), 0);
-    return cat.label + ": " + sum + "/" + (qs.length * 5);
-  }).join(" | ");
+  var total = 0;
+  for (var i = 0; i < questions.length; i++) { total += (answers[i] || 0); }
 
-  // Formspree — notifies Emily
+  var level = null;
+  for (var l = 0; l < levels.length; l++) { if (total >= levels[l].min) { level = levels[l]; break; } }
+
+  var catScores = [];
+  for (var c = 0; c < categories.length; c++) {
+    var cat = categories[c];
+    var sum = 0, count = 0;
+    for (var i = 0; i < questions.length; i++) { if (questions[i].cat === cat.id) { count++; sum += (answers[i] || 0); } }
+    catScores.push(cat.label + ": " + sum + "/" + (count * 5));
+  }
+  var catScoreStr = catScores.join(" | ");
+
+  // Formspree
   try {
-    const fd = new FormData();
+    var fd = new FormData();
     fd.append("Name", name);
     fd.append("Organization", org || "Not provided");
     fd.append("email", email);
@@ -1031,107 +980,105 @@ async function submitAssessment() {
     fd.append("_subject", "New Assessment: " + name + (org ? " (" + org + ")" : "") + " — " + level.label + " (" + total + "/100)");
     fd.append("Total Score", total + "/100");
     fd.append("Diagnostic Level", level.label);
-    fd.append("Category Scores", catScores);
+    fd.append("Category Scores", catScoreStr);
     fd.append("Recommended Templates & Processes", level.offerings.join(", "));
     fd.append("Recommendation", level.rec);
     await fetch("https://formspree.io/f/xqejadqy", { method: "POST", body: fd, headers: { "Accept": "application/json" } });
   } catch(e) { console.error("Formspree:", e); }
 
-  // MailerLite — adds to subscriber list
+  // MailerLite
   try {
-    const nameParts = name.trim().split(" ");
+    var nameParts = name.split(" ");
     await fetch("https://connect.mailerlite.com/api/subscribers", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Accept": "application/json",
-        "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI0IiwianRpIjoiMTc1MWQ5MjQzYWY4Nzg1MDA3ZDkzNGQ0NzA3MWI1ZjlhMzcyOTU5MWUwMjY4ZDg5OTliOGVlODg3ZmY1YTM2YmQ4ZTY5NzA0MGFjNWJjYzUiLCJpYXQiOjE3NzkyMTI5NjYuNTkwNDgzLCJuYmYiOjE3NzkyMTI5NjYuNTkwNDg1LCJleHAiOjQ5MzQ4ODY1NjYuNTg2MDkxLCJzdWIiOiIyMzgxMzIyIiwic2NvcGVzIjpbXX0.bJNsQnhDRBKiOOi8vRBY7gDCP2hI7o1k_bc1uw9Xv-sKbJArac8OWHTNLW8oGDAEw5GCs8Rumus0wut_G4UK58voeASoXN7vHqm0kCmaSyQnbWSIpziLXQrYNL3IkPtK9dsVrbOKXSYTTkyiBXasqSfBHbzMgMUnSEP94UCWi0Sy6-GH88aBQASIHvNFoeQPUQvZ5XO3uS5vXGU79rS40vA4p8IjF5f1LGq40aJXUAeJgEVqG5rDIPB1enRWU9S_zEeA3rmJCRfb68LK8Yb42v3q6yeQNT_HIHlew3G7VyDWI0LW9o72fQ-JEpkuGfK-AK4hGUgJs5OmtBykbOO7cfVTtAlKx0lVL9oEL5iVNrDZA1KoDUqjLWDKJ4874q0bnaAi2sQez7ulxDWKFCyM3raUaxp1cGvYX4pLp_2vBiZwQZXHmhGMPiN7pdky-_MBZNuYTnrPDlTY44Sa26wxaVs9hrWPhDETvG6yqTMgcvznjUjtY3FREIRlNmbwRo2v_yBb-TbbQxlQdvQQB-vbxWVCLmenOQGAe92DGWPTcO3zNNoe5rb_Pz-ChD8_OTahAXk65EIUFJsdCpXtuXNWV5Eepkr04oCNWOYIMZ6sz4YFxzPlN_9MPmyIxUZtJ0BZHFGuo5s_5FGRnYffn-El8qFddMIwh_A_x5NBNVPqfOI"
-      },
-      body: JSON.stringify({
-        email: email,
-        fields: { name: name, first_name: nameParts[0], last_name: nameParts.slice(1).join(" ") || "", organization: org || "", pmo_score: total + "/100", pmo_level: level.label, pmo_category_scores: catScores },
-        groups: ["187918332214641745"],
-        status: "active"
-      })
+      headers: { "Content-Type": "application/json", "Accept": "application/json", "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI0IiwianRpIjoiMTc1MWQ5MjQzYWY4Nzg1MDA3ZDkzNGQ0NzA3MWI1ZjlhMzcyOTU5MWUwMjY4ZDg5OTliOGVlODg3ZmY1YTM2YmQ4ZTY5NzA0MGFjNWJjYzUiLCJpYXQiOjE3NzkyMTI5NjYuNTkwNDgzLCJuYmYiOjE3NzkyMTI5NjYuNTkwNDg1LCJleHAiOjQ5MzQ4ODY1NjYuNTg2MDkxLCJzdWIiOiIyMzgxMzIyIiwic2NvcGVzIjpbXX0.bJNsQnhDRBKiOOi8vRBY7gDCP2hI7o1k_bc1uw9Xv-sKbJArac8OWHTNLW8oGDAEw5GCs8Rumus0wut_G4UK58voeASoXN7vHqm0kCmaSyQnbWSIpziLXQrYNL3IkPtK9dsVrbOKXSYTTkyiBXasqSfBHbzMgMUnSEP94UCWi0Sy6-GH88aBQASIHvNFoeQPUQvZ5XO3uS5vXGU79rS40vA4p8IjF5f1LGq40aJXUAeJgEVqG5rDIPB1enRWU9S_zEeA3rmJCRfb68LK8Yb42v3q6yeQNT_HIHlew3G7VyDWI0LW9o72fQ-JEpkuGfK-AK4hGUgJs5OmtBykbOO7cfVTtAlKx0lVL9oEL5iVNrDZA1KoDUqjLWDKJ4874q0bnaAi2sQez7ulxDWKFCyM3raUaxp1cGvYX4pLp_2vBiZwQZXHmhGMPiN7pdky-_MBZNuYTnrPDlTY44Sa26wxaVs9hrWPhDETvG6yqTMgcvznjUjtY3FREIRlNmbwRo2v_yBb-TbbQxlQdvQQB-vbxWVCLmenOQGAe92DGWPTcO3zNNoe5rb_Pz-ChD8_OTahAXk65EIUFJsdCpXtuXNWV5Eepkr04oCNWOYIMZ6sz4YFxzPlN_9MPmyIxUZtJ0BZHFGuo5s_5FGRnYffn-El8qFddMIwh_A_x5NBNVPqfOI" },
+      body: JSON.stringify({ email: email, fields: { name: name, first_name: nameParts[0], last_name: nameParts.slice(1).join(" ") || "", organization: org || "", pmo_score: total + "/100", pmo_level: level.label, pmo_category_scores: catScoreStr }, groups: ["187918332214641745"], status: "active" })
     });
   } catch(e) { console.error("MailerLite:", e); }
 
   submitBtn.disabled = false;
   submitBtn.textContent = "View my results";
-  showResults(name, total, level);
+  showResults(name, org, total, level);
 }
 
-function showResults(name, total, level) {
+function showResults(name, org, total, level) {
   document.getElementById("resultsName").textContent = "Results for " + name + (org ? " · " + org : "");
   document.getElementById("totalScore").textContent = total;
-  const badge = document.getElementById("levelBadge");
+  var badge = document.getElementById("levelBadge");
   badge.textContent = level.label;
   badge.style.background = level.bg;
   badge.style.color = level.color;
   document.getElementById("resultRec").textContent = level.rec;
 
   // Score grid
-  const grid = document.getElementById("scoreGrid");
-  let gridHtml = `<div class="score-tile"><div class="score-tile-label">Total score</div><div class="score-tile-num">${total}<span class="score-tile-denom"> /100</span></div></div>`;
-  categories.forEach(cat => {
-    const qs = questions.map((q, i) => ({ ...q, i })).filter(q => q.cat === cat.id);
-    const sum = qs.reduce((a, q) => a + (answers[q.i] || 0), 0);
-    const max = qs.length * 5;
-    gridHtml += `<div class="score-tile"><div class="score-tile-label" style="color:${cat.color};">${cat.label}</div><div class="score-tile-num">${sum}<span class="score-tile-denom"> /${max}</span></div></div>`;
-  });
-  grid.innerHTML = gridHtml;
+  var gridHtml = '<div class="score-tile"><div class="score-tile-label">Total score</div><div class="score-tile-num">' + total + '<span class="score-tile-denom"> /100</span></div></div>';
+  for (var c = 0; c < categories.length; c++) {
+    var cat = categories[c];
+    var sum = 0, count = 0;
+    for (var i = 0; i < questions.length; i++) { if (questions[i].cat === cat.id) { count++; sum += (answers[i] || 0); } }
+    gridHtml += '<div class="score-tile"><div class="score-tile-label" style="color:' + cat.color + ';">' + cat.label + '</div><div class="score-tile-num">' + sum + '<span class="score-tile-denom"> /' + (count*5) + '</span></div></div>';
+  }
+  document.getElementById("scoreGrid").innerHTML = gridHtml;
 
   // Bar chart
-  let barsHtml = "";
-  categories.forEach(cat => {
-    const qs = questions.map((q, i) => ({ ...q, i })).filter(q => q.cat === cat.id);
-    const sum = qs.reduce((a, q) => a + (answers[q.i] || 0), 0);
-    const max = qs.length * 5;
-    const pct = Math.round(sum / max * 100);
-    barsHtml += `<div class="bar-row">
-      <span class="bar-label">${cat.label}</span>
-      <div class="bar-track"><div class="bar-fill" data-pct="${pct}" style="background:${cat.color};"></div></div>
-      <span class="bar-num">${sum}/${max}</span>
-    </div>`;
-  });
+  var barsHtml = "";
+  for (var c = 0; c < categories.length; c++) {
+    var cat = categories[c];
+    var sum = 0, count = 0;
+    for (var i = 0; i < questions.length; i++) { if (questions[i].cat === cat.id) { count++; sum += (answers[i] || 0); } }
+    var pct = Math.round(sum / (count * 5) * 100);
+    barsHtml += '<div class="bar-row"><span class="bar-label">' + cat.label + '</span><div class="bar-track"><div class="bar-fill" data-pct="' + pct + '" style="background:' + cat.color + ';"></div></div><span class="bar-num">' + sum + '/' + (count*5) + '</span></div>';
+  }
   document.getElementById("catBars").innerHTML = barsHtml;
 
   // Offerings
   document.getElementById("offeringsDesc").textContent = level.offeringsDesc;
-  document.getElementById("offeringTags").innerHTML = level.offerings.map(o => `<span class="offering-tag">${o}</span>`).join("");
+  var tagsHtml = "";
+  for (var o = 0; o < level.offerings.length; o++) {
+    tagsHtml += '<span class="offering-tag">' + level.offerings[o] + '</span>';
+  }
+  document.getElementById("offeringTags").innerHTML = tagsHtml;
 
-  // Build pre-filled mailto for Work with Emily button
-  const catSummary = categories.map(cat => {
-    const qs = questions.map((q, i) => ({ ...q, i })).filter(q => q.cat === cat.id);
-    const sum = qs.reduce((a, q) => a + (answers[q.i] || 0), 0);
-    const max = qs.length * 5;
-    return cat.label + ": " + sum + "/" + max;
-  }).join("%0D%0A");
-
-  const subject = encodeURIComponent("I'd like to work with you — " + name + " (" + level.label + ", " + total + "/100)");
-  const body = "Hi Emily,%0D%0A%0D%0AI just completed the Bluebird project management assessment and would love to connect about working together.%0D%0A%0D%0AHere are my results:%0D%0AName: " + encodeURIComponent(name) + "%0D%0AOverall Score: " + total + "/100%0D%0ADiagnostic Level: " + encodeURIComponent(level.label) + "%0D%0A%0D%0ACategory Breakdown:%0D%0A" + catSummary + "%0D%0A%0D%0ALooking forward to hearing from you!%0D%0A%0D%0A" + encodeURIComponent(name);
+  // Build mailto for Work with Emily
+  var catSummary = "";
+  for (var c = 0; c < categories.length; c++) {
+    var cat = categories[c];
+    var sum = 0, count = 0;
+    for (var i = 0; i < questions.length; i++) { if (questions[i].cat === cat.id) { count++; sum += (answers[i] || 0); } }
+    if (catSummary) catSummary += "%0D%0A";
+    catSummary += cat.label + ": " + sum + "/" + (count*5);
+  }
+  var subject = encodeURIComponent("I'd like to work with you — " + name + " (" + level.label + ", " + total + "/100)");
+  var body = "Hi Emily,%0D%0A%0D%0AI just completed the Bluebird project management assessment and would love to connect.%0D%0A%0D%0AName: " + encodeURIComponent(name) + "%0D%0A" + (org ? "Organization: " + encodeURIComponent(org) + "%0D%0A" : "") + "Overall Score: " + total + "/100%0D%0ADiagnostic Level: " + encodeURIComponent(level.label) + "%0D%0A%0D%0ACategory Breakdown:%0D%0A" + catSummary + "%0D%0A%0D%0ALooking forward to hearing from you!%0D%0A%0D%0A" + encodeURIComponent(name);
   document.getElementById("emilyEmailBtn").href = "mailto:emily@weisko.com?subject=" + subject + "&body=" + body;
 
   document.getElementById("submitZone").style.display = "none";
-  const panel = document.getElementById("resultsPanel");
+  var panel = document.getElementById("resultsPanel");
   panel.style.display = "block";
   panel.scrollIntoView({ behavior: "smooth", block: "start" });
 
-  setTimeout(() => {
-    document.querySelectorAll(".bar-fill").forEach(el => { el.style.width = el.dataset.pct + "%"; });
+  setTimeout(function() {
+    var fills = document.querySelectorAll(".bar-fill");
+    for (var f = 0; f < fills.length; f++) {
+      fills[f].style.width = fills[f].getAttribute("data-pct") + "%";
+    }
   }, 100);
 }
 
 function resetAssessment() {
-  Object.keys(answers).forEach(k => delete answers[k]);
-  document.querySelectorAll(".scale-btn").forEach(b => b.classList.remove("active"));
-  document.querySelectorAll(".q-card").forEach(c => c.classList.remove("answered"));
+  answers = {};
+  var btns = document.querySelectorAll(".scale-btn");
+  for (var b = 0; b < btns.length; b++) btns[b].classList.remove("active");
+  var cards = document.querySelectorAll(".q-card");
+  for (var c = 0; c < cards.length; c++) cards[c].classList.remove("answered");
   document.getElementById("headerBar").style.width = "0%";
-  document.getElementById("headerCount").textContent = "0 / 20";
-  categories.forEach(cat => {
-    const badge = document.getElementById("badge_" + cat.id);
-    if (badge) badge.textContent = "0 / " + questions.filter(q => q.cat === cat.id).length + " answered";
-  });
+  document.getElementById("headerCount").textContent = "0 / " + questions.length;
+  for (var c = 0; c < categories.length; c++) {
+    var badge = document.getElementById("badge_" + categories[c].id);
+    var count = 0;
+    for (var i = 0; i < questions.length; i++) { if (questions[i].cat === categories[c].id) count++; }
+    if (badge) badge.textContent = "0 / " + count + " answered";
+  }
   document.getElementById("firstNameInput").value = "";
   document.getElementById("lastNameInput").value = "";
   document.getElementById("orgInput").value = "";
