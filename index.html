@@ -952,7 +952,7 @@ function buildQuestions() {
 }
 
 function setAnswer(qIdx, val) {
-  answers[qIdx] = val;
+  answers[parseInt(qIdx)] = parseInt(val);
   document.getElementById("qcard_" + qIdx).classList.add("answered");
   document.querySelectorAll(`[data-q="${qIdx}"]`).forEach(btn => {
     btn.classList.toggle("active", parseInt(btn.dataset.v) === val);
@@ -961,7 +961,7 @@ function setAnswer(qIdx, val) {
 }
 
 function updateProgress() {
-  const n = Object.keys(answers).length;
+  const n = Object.keys(answers).filter(k => answers[k] !== undefined).length;
   const pct = Math.round(n / 20 * 100);
   document.getElementById("headerBar").style.width = pct + "%";
   document.getElementById("headerCount").textContent = n + " / 20";
@@ -976,7 +976,7 @@ function updateProgress() {
 }
 
 async function submitAssessment() {
-  const n = Object.keys(answers).length;
+  const n = Object.keys(answers).filter(k => answers[k] !== undefined).length;
   const firstName = document.getElementById("firstNameInput").value.trim();
   const lastName = document.getElementById("lastNameInput").value.trim();
   const org = document.getElementById("orgInput").value.trim();
@@ -986,10 +986,10 @@ async function submitAssessment() {
   const submitBtn = document.querySelector(".submit-btn");
 
   if (n < 20) {
-    errEl.textContent = "Please answer all 20 questions before submitting.";
+    errEl.textContent = "Please answer all " + questions.length + " questions before submitting. You have answered " + n + " so far.";
     errEl.style.display = "block";
-    const first = questions.findIndex((_, i) => !answers[i]);
-    document.getElementById("qcard_" + first).scrollIntoView({ behavior: "smooth", block: "center" });
+    const first = questions.findIndex((_, i) => answers[i] === undefined);
+    if (first >= 0) document.getElementById("qcard_" + first).scrollIntoView({ behavior: "smooth", block: "center" });
     return;
   }
   if (!firstName) {
