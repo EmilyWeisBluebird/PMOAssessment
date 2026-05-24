@@ -923,6 +923,7 @@ function updateProgress() {
 }
 
 async function submitAssessment() {
+  try {
   var n = 0;
   for (var i = 0; i < questions.length; i++) { if (answers[i] !== undefined) n++; }
 
@@ -999,6 +1000,13 @@ async function submitAssessment() {
   submitBtn.disabled = false;
   submitBtn.textContent = "View my results";
   showResults(name, org, total, level);
+  } catch(err) {
+    console.error("submitAssessment error:", err);
+    var errEl = document.getElementById("errorMsg");
+    if (errEl) { errEl.textContent = "Something went wrong: " + err.message; errEl.style.display = "block"; }
+    var submitBtn = document.querySelector(".submit-btn");
+    if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = "View my results"; }
+  }
 }
 
 function showResults(name, org, total, level) {
@@ -1088,6 +1096,10 @@ function resetAssessment() {
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
+window.onerror = function(msg, src, line, col, err) {
+  console.error("Global error:", msg, "line:", line);
+  return false;
+};
 buildQuestions();
 </script>
 </body>
