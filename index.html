@@ -745,6 +745,9 @@
       <input type="text" class="form-input" id="firstNameInput" placeholder="First name" style="flex:1;" />
       <input type="text" class="form-input" id="lastNameInput" placeholder="Last name" style="flex:1;" />
     </div>
+    <div class="input-row">
+      <input type="text" class="form-input" id="orgInput" placeholder="Organization name" />
+    </div>
     <div class="email-row">
       <input type="email" class="form-input" id="emailInput" placeholder="your@email.com" style="flex:1;" />
       <button class="submit-btn" onclick="submitAssessment()">View my results</button>
@@ -976,6 +979,7 @@ async function submitAssessment() {
   const n = Object.keys(answers).length;
   const firstName = document.getElementById("firstNameInput").value.trim();
   const lastName = document.getElementById("lastNameInput").value.trim();
+  const org = document.getElementById("orgInput").value.trim();
   const name = (firstName + " " + lastName).trim();
   const email = document.getElementById("emailInput").value.trim();
   const errEl = document.getElementById("errorMsg");
@@ -1021,9 +1025,10 @@ async function submitAssessment() {
   try {
     const fd = new FormData();
     fd.append("Name", name);
+    fd.append("Organization", org || "Not provided");
     fd.append("email", email);
     fd.append("_replyto", email);
-    fd.append("_subject", "New Assessment: " + name + " — " + level.label + " (" + total + "/100)");
+    fd.append("_subject", "New Assessment: " + name + (org ? " (" + org + ")" : "") + " — " + level.label + " (" + total + "/100)");
     fd.append("Total Score", total + "/100");
     fd.append("Diagnostic Level", level.label);
     fd.append("Category Scores", catScores);
@@ -1044,7 +1049,7 @@ async function submitAssessment() {
       },
       body: JSON.stringify({
         email: email,
-        fields: { name: name, first_name: nameParts[0], last_name: nameParts.slice(1).join(" ") || "", pmo_score: total + "/100", pmo_level: level.label, pmo_category_scores: catScores },
+        fields: { name: name, first_name: nameParts[0], last_name: nameParts.slice(1).join(" ") || "", organization: org || "", pmo_score: total + "/100", pmo_level: level.label, pmo_category_scores: catScores },
         groups: ["187918332214641745"],
         status: "active"
       })
@@ -1057,7 +1062,7 @@ async function submitAssessment() {
 }
 
 function showResults(name, total, level) {
-  document.getElementById("resultsName").textContent = "Results for " + name;
+  document.getElementById("resultsName").textContent = "Results for " + name + (org ? " · " + org : "");
   document.getElementById("totalScore").textContent = total;
   const badge = document.getElementById("levelBadge");
   badge.textContent = level.label;
@@ -1129,6 +1134,7 @@ function resetAssessment() {
   });
   document.getElementById("firstNameInput").value = "";
   document.getElementById("lastNameInput").value = "";
+  document.getElementById("orgInput").value = "";
   document.getElementById("emailInput").value = "";
   document.getElementById("submitZone").style.display = "block";
   document.getElementById("resultsPanel").style.display = "none";
