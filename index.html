@@ -915,11 +915,11 @@
 
 <script>
 const categories = [
-  { id: "pri", anchor: "cat-pri", label: "How you decide what to work on", desc: "Do you have a clear way to choose what gets attention — and what doesn't?", color: "#4A6FA5", bg: "#E8EEF7", icon: "✦", offerings: ["Project Intake Form", "Project Prioritization Template", "Project Prioritization Process", "PMO Governance Process"] },
-  { id: "vis", anchor: "cat-vis", label: "How you track what's happening", desc: "Can you and your team see project status without chasing people for updates?", color: "#2B7FD4", bg: "#E6F1FB", icon: "◎", offerings: ["Leadership Project Dashboard", "Project Intake Template", "Risk Management Process"] },
-  { id: "com", anchor: "cat-com", label: "How your team stays aligned", desc: "Does everyone know what's going on, who owns what, and where to go when things get complicated?", color: "#7059CC", bg: "#EEEDFE", icon: "◈", offerings: ["Communication Plan & Matrix", "Stakeholder Matrix", "RACI Chart", "Meeting Agenda Templates", "Communication Management Process"] },
-  { id: "del", anchor: "cat-del", label: "How you get work done", desc: "Do your projects actually finish — on time, on budget, and without burning your team out?", color: "#C4511F", bg: "#FAECE7", icon: "▲", offerings: ["Project Charter Template", "PMO Governance Process", "Risk Management Process", "Project Intake & Prioritization Process"] },
-  { id: "kno", anchor: "cat-kno", label: "How you learn and improve", desc: "Does your team get better with every project, or do the same problems keep coming back?", color: "#B06A10", bg: "#FAEEDA", icon: "◇", offerings: ["PMO Governance Process", "Project Charter Template"] }
+  { id: "pri", anchor: "cat-pri", label: "How you decide what to work on", desc: "Do you have a clear way to choose what gets attention — and what doesn't?", color: "#4A6FA5", bg: "#E8EEF7", icon: "✦", gap: "New work gets started without a clear way to decide what matters most, so your team spreads thin across too many things at once.", offerings: ["Project Intake Form", "Project Prioritization Template", "Project Intake & Prioritization Process", "PMO Governance Process"] },
+  { id: "vis", anchor: "cat-vis", label: "How you track what's happening", desc: "Can you and your team see project status without chasing people for updates?", color: "#2B7FD4", bg: "#E6F1FB", icon: "◎", gap: "There's no single view of where projects stand, so updates take chasing and problems surface late.", offerings: ["Weekly Status Report Template", "RAID Log", "Weekly Status Review Process", "Leadership Project Dashboard"] },
+  { id: "com", anchor: "cat-com", label: "How your team stays aligned", desc: "Does everyone know what's going on, who owns what, and where to go when things get complicated?", color: "#7059CC", bg: "#EEEDFE", icon: "◈", gap: "Ownership and next steps aren't always clear, so work stalls in the handoffs between people and teams.", offerings: ["Meeting Agenda Templates", "RACI Chart", "Stakeholder Matrix", "Communication Plan & Matrix"] },
+  { id: "del", anchor: "cat-del", label: "How you get work done", desc: "Do your projects actually finish — on time, on budget, and without burning your team out?", color: "#C4511F", bg: "#FAECE7", icon: "▲", gap: "Work loses its shape once it's underway, so deadlines slip and your team ends up firefighting.", offerings: ["Project Charter Template", "Project Work Plan Template", "Risk Management Process", "RACI Chart"] },
+  { id: "kno", anchor: "cat-kno", label: "How you learn and improve", desc: "Does your team get better with every project, or do the same problems keep coming back?", color: "#B06A10", bg: "#FAEEDA", icon: "◇", gap: "Lessons from past projects aren't captured, so the same problems keep coming back.", offerings: ["Lessons Learned Template", "Project Closeout Process"] }
 ];
 
 const questions = [
@@ -954,6 +954,73 @@ const levels = [
 
 var answers = {};
 var submitterOrg = "";
+
+// Recommendations come from the weakest categories (by percentage), not the overall score band.
+var GAP_THRESHOLD = 70;   // categories at or above this % are treated as strengths
+var MAX_GAP_CATS = 3;     // look at up to the 3 weakest categories
+var MAX_OFFERINGS = 6;    // never recommend more than 6 items
+
+function getCategoryResults() {
+  var results = [];
+  for (var c = 0; c < categories.length; c++) {
+    var cat = categories[c];
+    var sum = 0, count = 0;
+    for (var i = 0; i < questions.length; i++) { if (questions[i].cat === cat.id) { count++; sum += (answers[i] || 0); } }
+    results.push({ cat: cat, sum: sum, max: count * 5, count: count, pct: Math.round(sum / (count * 5) * 100), order: c });
+  }
+  return results;
+}
+
+function getRecommendations(level) {
+  var results = getCategoryResults();
+  // Weakest first; on a tie, the category with more questions (more evidence) wins, then page order.
+  var ranked = results.slice().sort(function(a, b) {
+    if (a.pct !== b.pct) return a.pct - b.pct;
+    if (a.count !== b.count) return b.count - a.count;
+    return a.order - b.order;
+  });
+  var gaps = ranked.filter(function(r) { return r.pct < GAP_THRESHOLD; }).slice(0, MAX_GAP_CATS);
+  // Strongest: highest %, and on a tie the category with more questions (more evidence).
+  var strongest = results.slice().sort(function(a, b) {
+    if (a.pct !== b.pct) return b.pct - a.pct;
+    if (a.count !== b.count) return b.count - a.count;
+    return a.order - b.order;
+  })[0];
+
+  if (gaps.length === 0) {
+    return { offerings: level.offerings, offeringsDesc: level.offeringsDesc, rec: level.rec, gaps: [], gapSummary: "None below " + GAP_THRESHOLD + "%" };
+  }
+
+  // Fewer gap categories -> more items from each.
+  var perCat = gaps.length === 1 ? 4 : (gaps.length === 2 ? 3 : 2);
+  var offerings = [];
+  for (var g = 0; g < gaps.length; g++) {
+    var added = 0;
+    var list = gaps[g].cat.offerings;
+    for (var o = 0; o < list.length && added < perCat; o++) {
+      if (offerings.indexOf(list[o]) === -1) { offerings.push(list[o]); added++; }
+    }
+  }
+  offerings = offerings.slice(0, MAX_OFFERINGS);
+
+  var top = gaps[0];
+  var rec = level.rec + " Your biggest gap is " + top.cat.label.toLowerCase() + " (" + top.pct + "%). " + top.cat.gap;
+  if (strongest.pct >= 60 && strongest.cat.id !== top.cat.id) {
+    rec += " Your strongest area is " + strongest.cat.label.toLowerCase() + " (" + strongest.pct + "%), so build from there.";
+  }
+
+  var desc = gaps.length === 1
+    ? "Start here. These target your lowest-scoring area:"
+    : "Start here. These target your lowest-scoring areas:";
+
+  return {
+    offerings: offerings,
+    offeringsDesc: desc,
+    rec: rec,
+    gaps: gaps,
+    gapSummary: gaps.map(function(r) { return r.cat.label + " (" + r.pct + "%)"; }).join(" | ")
+  };
+}
 
 function goToLinkedIn() {
   window.location.href = "https://www.linkedin.com/in/emily-weis-19b10541/";
@@ -1074,6 +1141,7 @@ async function submitAssessment() {
 
   var level = null;
   for (var l = 0; l < levels.length; l++) { if (total >= levels[l].min) { level = levels[l]; break; } }
+  var reco = getRecommendations(level);
 
   var catScores = [];
   for (var c = 0; c < categories.length; c++) {
@@ -1095,8 +1163,9 @@ async function submitAssessment() {
     fd.append("Total Score", total + "/100");
     fd.append("Diagnostic Level", level.label);
     fd.append("Category Scores", catScoreStr);
-    fd.append("Recommended Templates & Processes", level.offerings.join(", "));
-    fd.append("Recommendation", level.rec);
+    fd.append("Biggest Gaps", reco.gapSummary);
+    fd.append("Recommended Templates & Processes", reco.offerings.join(", "));
+    fd.append("Recommendation", reco.rec);
     await fetch("https://formspree.io/f/xqejadqy", { method: "POST", body: fd, headers: { "Accept": "application/json" } });
   } catch(e) { console.error("Formspree:", e); }
 
@@ -1112,7 +1181,7 @@ async function submitAssessment() {
 
   submitBtn.disabled = false;
   submitBtn.textContent = "View my results";
-  showResults(name, org, total, level);
+  showResults(name, org, total, level, reco);
   } catch(err) {
     console.error("submitAssessment error:", err);
     var errEl = document.getElementById("errorMsg");
@@ -1122,14 +1191,15 @@ async function submitAssessment() {
   }
 }
 
-function showResults(name, org, total, level) {
+function showResults(name, org, total, level, reco) {
+  reco = reco || getRecommendations(level);
   document.getElementById("resultsName").textContent = "Results for " + name + (org ? " · " + org : "");
   document.getElementById("totalScore").textContent = total;
   var badge = document.getElementById("levelBadge");
   badge.textContent = level.label;
   badge.style.background = level.bg;
   badge.style.color = level.color;
-  document.getElementById("resultRec").textContent = level.rec;
+  document.getElementById("resultRec").textContent = reco.rec;
 
   // Score grid
   var gridHtml = '<div class="score-tile"><div class="score-tile-label">Total score</div><div class="score-tile-num">' + total + '<span class="score-tile-denom"> /100</span></div></div>';
@@ -1153,10 +1223,10 @@ function showResults(name, org, total, level) {
   document.getElementById("catBars").innerHTML = barsHtml;
 
   // Offerings
-  document.getElementById("offeringsDesc").textContent = level.offeringsDesc;
+  document.getElementById("offeringsDesc").textContent = reco.offeringsDesc;
   var tagsHtml = "";
-  for (var o = 0; o < level.offerings.length; o++) {
-    tagsHtml += '<span class="offering-tag">' + level.offerings[o] + '</span>';
+  for (var o = 0; o < reco.offerings.length; o++) {
+    tagsHtml += '<span class="offering-tag">' + reco.offerings[o] + '</span>';
   }
   document.getElementById("offeringTags").innerHTML = tagsHtml;
 
