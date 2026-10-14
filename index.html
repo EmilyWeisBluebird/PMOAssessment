@@ -1030,7 +1030,7 @@ function goToLinkedIn() {
 
 function buildQuestions() {
   var area = document.getElementById("questionArea");
-  var scaleOptions = [{v:1,label:"No"},{v:3,label:"Sometimes"},{v:5,label:"Yes"}];
+  var scaleOptions = [{v:0,label:"No"},{v:2,label:"Sometimes"},{v:5,label:"Yes"}];
   var html = "";
   var currentCat = null;
 
@@ -1165,7 +1165,7 @@ async function submitAssessment() {
     fd.append("Total Score", total + "/100");
     fd.append("Diagnostic Level", level.label);
     fd.append("Category Scores", catScoreStr);
-    var answerLabels = { 1: "No", 3: "Sometimes", 5: "Yes" };
+    var answerLabels = { 0: "No", 2: "Sometimes", 5: "Yes" };
     for (var qi = 0; qi < questions.length; qi++) {
       var qCat = null;
       for (var qc = 0; qc < categories.length; qc++) { if (categories[qc].id === questions[qi].cat) { qCat = categories[qc]; break; } }
