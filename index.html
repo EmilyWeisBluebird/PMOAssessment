@@ -1169,14 +1169,17 @@ async function submitAssessment() {
     await fetch("https://formspree.io/f/xqejadqy", { method: "POST", body: fd, headers: { "Accept": "application/json" } });
   } catch(e) { console.error("Formspree:", e); }
 
-  // MailerLite
+  // MailerLite (public embedded-form endpoint; no API key in the page)
   try {
     var nameParts = name.split(" ");
-    await fetch("https://connect.mailerlite.com/api/subscribers", {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "Accept": "application/json", "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI0IiwianRpIjoiMTc1MWQ5MjQzYWY4Nzg1MDA3ZDkzNGQ0NzA3MWI1ZjlhMzcyOTU5MWUwMjY4ZDg5OTliOGVlODg3ZmY1YTM2YmQ4ZTY5NzA0MGFjNWJjYzUiLCJpYXQiOjE3NzkyMTI5NjYuNTkwNDgzLCJuYmYiOjE3NzkyMTI5NjYuNTkwNDg1LCJleHAiOjQ5MzQ4ODY1NjYuNTg2MDkxLCJzdWIiOiIyMzgxMzIyIiwic2NvcGVzIjpbXX0.bJNsQnhDRBKiOOi8vRBY7gDCP2hI7o1k_bc1uw9Xv-sKbJArac8OWHTNLW8oGDAEw5GCs8Rumus0wut_G4UK58voeASoXN7vHqm0kCmaSyQnbWSIpziLXQrYNL3IkPtK9dsVrbOKXSYTTkyiBXasqSfBHbzMgMUnSEP94UCWi0Sy6-GH88aBQASIHvNFoeQPUQvZ5XO3uS5vXGU79rS40vA4p8IjF5f1LGq40aJXUAeJgEVqG5rDIPB1enRWU9S_zEeA3rmJCRfb68LK8Yb42v3q6yeQNT_HIHlew3G7VyDWI0LW9o72fQ-JEpkuGfK-AK4hGUgJs5OmtBykbOO7cfVTtAlKx0lVL9oEL5iVNrDZA1KoDUqjLWDKJ4874q0bnaAi2sQez7ulxDWKFCyM3raUaxp1cGvYX4pLp_2vBiZwQZXHmhGMPiN7pdky-_MBZNuYTnrPDlTY44Sa26wxaVs9hrWPhDETvG6yqTMgcvznjUjtY3FREIRlNmbwRo2v_yBb-TbbQxlQdvQQB-vbxWVCLmenOQGAe92DGWPTcO3zNNoe5rb_Pz-ChD8_OTahAXk65EIUFJsdCpXtuXNWV5Eepkr04oCNWOYIMZ6sz4YFxzPlN_9MPmyIxUZtJ0BZHFGuo5s_5FGRnYffn-El8qFddMIwh_A_x5NBNVPqfOI" },
-      body: JSON.stringify({ email: email, fields: { name: name, first_name: nameParts[0], last_name: nameParts.slice(1).join(" ") || "", organization: org || "", pmo_score: total + "/100", pmo_level: level.label, pmo_category_scores: catScoreStr }, groups: ["187918332214641745"], status: "active" })
-    });
+    var ml = new URLSearchParams();
+    ml.append("fields[email]", email);
+    ml.append("fields[name]", nameParts[0]);
+    ml.append("fields[last_name]", nameParts.slice(1).join(" "));
+    ml.append("fields[company]", org || "");
+    ml.append("ml-submit", "1");
+    ml.append("anticsrf", "true");
+    await fetch("https://assets.mailerlite.com/jsonp/2362414/forms/201270229321385048/subscribe", { method: "POST", mode: "no-cors", body: ml });
   } catch(e) { console.error("MailerLite:", e); }
 
   submitBtn.disabled = false;
