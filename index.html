@@ -643,7 +643,9 @@
     transition: width 0.8s cubic-bezier(0.4,0,0.2,1);
   }
 
-  .bar-num { font-size: 13px; font-weight: 500; color: var(--ink-mid); width: 36px; text-align: right; }
+  .bar-num { font-size: 13px; font-weight: 500; color: var(--ink-mid); width: 72px; text-align: right; white-space: nowrap; }
+  .bar-num-raw { font-weight: 400; color: var(--ink-faint); font-size: 11px; margin-left: 4px; }
+  .score-tile-pct { font-size: 12px; color: var(--ink-faint); margin-top: 2px; }
 
   .reset-btn {
     display: inline-block;
@@ -1163,6 +1165,12 @@ async function submitAssessment() {
     fd.append("Total Score", total + "/100");
     fd.append("Diagnostic Level", level.label);
     fd.append("Category Scores", catScoreStr);
+    var answerLabels = { 1: "No", 3: "Sometimes", 5: "Yes" };
+    for (var qi = 0; qi < questions.length; qi++) {
+      var qCat = null;
+      for (var qc = 0; qc < categories.length; qc++) { if (categories[qc].id === questions[qi].cat) { qCat = categories[qc]; break; } }
+      fd.append("Q" + (qi + 1) + " [" + qCat.label + "] " + questions[qi].text, answerLabels[answers[qi]] || "No answer");
+    }
     fd.append("Biggest Gaps", reco.gapSummary);
     fd.append("Recommended Templates & Processes", reco.offerings.join(", "));
     fd.append("Recommendation", reco.rec);
@@ -1210,7 +1218,7 @@ function showResults(name, org, total, level, reco) {
     var cat = categories[c];
     var sum = 0, count = 0;
     for (var i = 0; i < questions.length; i++) { if (questions[i].cat === cat.id) { count++; sum += (answers[i] || 0); } }
-    gridHtml += '<div class="score-tile"><div class="score-tile-label" style="color:' + cat.color + ';">' + cat.label + '</div><div class="score-tile-num">' + sum + '<span class="score-tile-denom"> /' + (count*5) + '</span></div></div>';
+    gridHtml += '<div class="score-tile"><div class="score-tile-label" style="color:' + cat.color + ';">' + cat.label + '</div><div class="score-tile-num">' + sum + '<span class="score-tile-denom"> /' + (count*5) + '</span></div><div class="score-tile-pct">' + Math.round(sum / (count * 5) * 100) + '%</div></div>';
   }
   document.getElementById("scoreGrid").innerHTML = gridHtml;
 
@@ -1221,7 +1229,7 @@ function showResults(name, org, total, level, reco) {
     var sum = 0, count = 0;
     for (var i = 0; i < questions.length; i++) { if (questions[i].cat === cat.id) { count++; sum += (answers[i] || 0); } }
     var pct = Math.round(sum / (count * 5) * 100);
-    barsHtml += '<div class="bar-row"><span class="bar-label">' + cat.label + '</span><div class="bar-track"><div class="bar-fill" data-pct="' + pct + '" style="background:' + cat.color + ';"></div></div><span class="bar-num">' + sum + '/' + (count*5) + '</span></div>';
+    barsHtml += '<div class="bar-row"><span class="bar-label">' + cat.label + '</span><div class="bar-track"><div class="bar-fill" data-pct="' + pct + '" style="background:' + cat.color + ';"></div></div><span class="bar-num">' + pct + '%<span class="bar-num-raw">' + sum + '/' + (count*5) + '</span></span></div>';
   }
   document.getElementById("catBars").innerHTML = barsHtml;
 
